@@ -129,8 +129,8 @@ class Board:
                     c = [n for n in edges[1] if n != node_id].pop()
 
                     # do bfs from a adding all encountered nodes
-                    a_nodeset = self.bfs_walk(a, edge_color)
-                    c_nodeset = self.bfs_walk(c, edge_color)
+                    a_nodeset = self._bfs_walk(a, edge_color)
+                    c_nodeset = self._bfs_walk(c, edge_color)
 
                     # split this components on here.
                     b_index = self._get_connected_component_index(node_id, edge_color)
@@ -157,7 +157,7 @@ class Board:
         self.player_port_resources_cache = {}  # Reset port resources
         return previous_road_color, self.road_color, self.road_lengths
 
-    def bfs_walk(self, node_id, color):
+    def _bfs_walk(self, node_id, color):
         """Generates set of nodes that are "connected" to given node.
 
         Args:
@@ -175,7 +175,7 @@ class Board:
             n = agenda.pop()
             visited.add(n)
 
-            if self.is_enemy_node(n, color):
+            if self._is_enemy_node(n, color):
                 continue  # end of the road
 
             neighbors = [v for v in STATIC_GRAPH.neighbors(n) if v not in visited]
@@ -202,11 +202,17 @@ class Board:
         a, b = edge
         a_index = self._get_connected_component_index(a, color)
         b_index = self._get_connected_component_index(b, color)
-        if a_index is None and b_index is not None and not self.is_enemy_node(a, color):
+        if (
+            a_index is None
+            and b_index is not None
+            and not self._is_enemy_node(a, color)
+        ):
             self.connected_components[color][b_index].add(a)
             component = self.connected_components[color][b_index]
         elif (
-            a_index is not None and b_index is None and not self.is_enemy_node(b, color)
+            a_index is not None
+            and b_index is None
+            and not self._is_enemy_node(b, color)
         ):
             self.connected_components[color][a_index].add(b)
             component = self.connected_components[color][a_index]
@@ -261,7 +267,7 @@ class Board:
         expandable_nodes = set()
         for node_set in self.connected_components[color]:
             for node in node_set:
-                if not self.is_enemy_node(node, color):
+                if not self._is_enemy_node(node, color):
                     expandable_nodes.add(node)
 
         candidate_edges = self.buildable_subgraph.edges(expandable_nodes)
@@ -341,13 +347,9 @@ class Board:
         except KeyError:
             return None
 
-    def is_enemy_node(self, node_id, color):
+    def _is_enemy_node(self, node_id, color):
         node_color = self.get_node_color(node_id)
         return node_color is not None and node_color != color
-
-    def is_enemy_road(self, edge, color):
-        edge_color = self.get_edge_color(edge)
-        return edge_color is not None and edge_color != color
 
 
 def longest_acyclic_path(board: Board, node_set: Set[int], color: Color):
