@@ -76,7 +76,7 @@ def init_board_tensor_map():
         (73, 59),
         (72, 60),
     ]
-    paths = [nx.shortest_path(STATIC_GRAPH, a, b) for (a, b) in pairs]
+    paths = [STATIC_GRAPH.shortest_path(a, b) for (a, b) in pairs]
 
     node_map = {}
     edge_map = {}
