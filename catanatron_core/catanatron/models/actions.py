@@ -154,7 +154,7 @@ def road_building_possibilities(state, color, check_money=True) -> List[Action]:
     if (not check_money or has_money) and has_roads_available:
         buildable_edges = state.board.buildable_edges(color)
         return [Action(color, ActionType.BUILD_ROAD, edge) for edge in buildable_edges]
-        
+
     return []
 
 
