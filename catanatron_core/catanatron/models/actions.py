@@ -114,8 +114,8 @@ def generate_playable_actions(state) -> List[Action]:
                     )
                 )
         return actions
-    else:
-        raise RuntimeError("Unknown ActionPrompt: " + str(action_prompt))
+
+    raise RuntimeError("Unknown ActionPrompt: " + str(action_prompt))
 
 
 def monopoly_possibilities(color) -> List[Action]:
@@ -154,8 +154,8 @@ def road_building_possibilities(state, color, check_money=True) -> List[Action]:
     if (not check_money or has_money) and has_roads_available:
         buildable_edges = state.board.buildable_edges(color)
         return [Action(color, ActionType.BUILD_ROAD, edge) for edge in buildable_edges]
-    else:
-        return []
+        
+    return []
 
 
 def settlement_possibilities(state, color, initial_build_phase=False) -> List[Action]:
@@ -261,14 +261,6 @@ def discard_possibilities(color) -> List[Action]:
     #         to_discard,
     #     )
     # )
-
-
-def ncr(n, r):
-    """n choose r. helper for discard_possibilities"""
-    r = min(r, n - r)
-    numer = reduce(op.mul, range(n, n - r, -1), 1)
-    denom = reduce(op.mul, range(1, r + 1), 1)
-    return numer // denom
 
 
 def maritime_trade_possibilities(state, color) -> List[Action]:
