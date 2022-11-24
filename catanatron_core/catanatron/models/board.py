@@ -202,11 +202,17 @@ class Board:
         a, b = edge
         a_index = self._get_connected_component_index(a, color)
         b_index = self._get_connected_component_index(b, color)
-        if a_index is None and b_index is not None and not self._is_enemy_node(a, color):
+        if (
+            a_index is None
+            and b_index is not None
+            and not self._is_enemy_node(a, color)
+        ):
             self.connected_components[color][b_index].add(a)
             component = self.connected_components[color][b_index]
         elif (
-            a_index is not None and b_index is None and not self._is_enemy_node(b, color)
+            a_index is not None
+            and b_index is None
+            and not self._is_enemy_node(b, color)
         ):
             self.connected_components[color][a_index].add(b)
             component = self.connected_components[color][a_index]
