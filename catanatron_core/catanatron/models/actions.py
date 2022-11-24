@@ -194,8 +194,8 @@ def city_possibilities(state, color) -> List[Action]:
             Action(color, ActionType.BUILD_CITY, node_id)
             for node_id in get_player_buildings(state, color, SETTLEMENT)
         ]
-    else:
-        return []
+
+    return []
 
 
 def robber_possibilities(state, color) -> List[Action]:
