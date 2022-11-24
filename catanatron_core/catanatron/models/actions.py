@@ -167,22 +167,20 @@ def settlement_possibilities(state, color, initial_build_phase=False) -> List[Ac
             Action(color, ActionType.BUILD_SETTLEMENT, node_id)
             for node_id in buildable_node_ids
         ]
-    else:
-        key = player_key(state, color)
-        has_money = player_resource_freqdeck_contains(
-            state, color, SETTLEMENT_COST_FREQDECK
-        )
-        has_settlements_available = (
-            state.player_state[f"{key}_SETTLEMENTS_AVAILABLE"] > 0
-        )
-        if has_money and has_settlements_available:
-            buildable_node_ids = state.board.buildable_node_ids(color)
-            return [
-                Action(color, ActionType.BUILD_SETTLEMENT, node_id)
-                for node_id in buildable_node_ids
-            ]
-        else:
-            return []
+
+    key = player_key(state, color)
+    has_money = player_resource_freqdeck_contains(
+        state, color, SETTLEMENT_COST_FREQDECK
+    )
+    has_settlements_available = state.player_state[f"{key}_SETTLEMENTS_AVAILABLE"] > 0
+    if has_money and has_settlements_available:
+        buildable_node_ids = state.board.buildable_node_ids(color)
+        return [
+            Action(color, ActionType.BUILD_SETTLEMENT, node_id)
+            for node_id in buildable_node_ids
+        ]
+
+    return []
 
 
 def city_possibilities(state, color) -> List[Action]:
