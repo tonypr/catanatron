@@ -27,8 +27,12 @@ Coordinate = Tuple[int, int, int]
 
 
 @dataclass
-class LandTile:
+class Tile:
     id: int
+
+
+@dataclass
+class LandTile(Tile):
     resource: Union[FastResource, None]  # None means desert tile
     number: Union[int, None]  # None if desert
     nodes: Dict[NodeRef, NodeId]  # node_ref => node_id
@@ -40,8 +44,7 @@ class LandTile:
 
 
 @dataclass
-class Port:
-    id: int
+class Port(Tile):
     resource: Union[FastResource, None]  # None means desert tile
     direction: Direction
     nodes: Dict[NodeRef, NodeId]  # node_ref => node_id
@@ -52,13 +55,10 @@ class Port:
         return self.id
 
 
-@dataclass(frozen=True)
-class Water:
+@dataclass
+class Water(Tile):
     nodes: Dict[NodeRef, NodeId]
     edges: Dict[EdgeRef, EdgeId]
-
-
-Tile = Union[LandTile, Port, Water]
 
 
 @dataclass(frozen=True)
@@ -363,7 +363,6 @@ def initialize_tiles(
                 tile_autoinc, shuffled_port_resources.pop(), direction, nodes, edges
             )
             all_tiles[coordinate] = port
-            tile_autoinc += 1
         elif tile_type == LandTile:
             resource = shuffled_tile_resources.pop()
             if resource != None:
@@ -372,12 +371,13 @@ def initialize_tiles(
             else:
                 tile = LandTile(tile_autoinc, None, None, nodes, edges)  # desert
             all_tiles[coordinate] = tile
-            tile_autoinc += 1
         elif tile_type == Water:
-            water_tile = Water(nodes, edges)
+            water_tile = Water(tile_autoinc, nodes, edges)
             all_tiles[coordinate] = water_tile
         else:
             raise ValueError("Invalid tile")
+
+        tile_autoinc += 1
 
     return all_tiles
 
