@@ -2,7 +2,7 @@ import typing
 from dataclasses import dataclass
 import random
 from collections import Counter, defaultdict
-from typing import Dict, FrozenSet, List, Literal, Mapping, Set, Tuple, Type, Union
+from typing import Dict, FrozenSet, List, Literal, Mapping, Set, Tuple, Type, Union, Any
 
 from catanatron.models.coordinate_system import Direction, add, UNIT_VECTORS
 from catanatron.models.enums import (
@@ -316,11 +316,12 @@ def number_probability(number):
     return DICE_PROBAS[number]
 
 
+def shuffled(elements: List[Any]):
+    return random.sample(elements, len(elements))
+
+
 def initialize_tiles(
     map_template: MapTemplate,
-    shuffled_numbers_param=None,
-    shuffled_port_resources_param=None,
-    shuffled_tile_resources_param=None,
 ) -> Dict[Coordinate, Tile]:
     """Initializes a new random board, based on the MapTemplate.
 
@@ -337,15 +338,9 @@ def initialize_tiles(
     Returns:
         Dict[Coordinate, Tile]: Coordinate to initialized Tile mapping.
     """
-    shuffled_port_resources = shuffled_port_resources_param or random.sample(
-        map_template.port_resources, len(map_template.port_resources)
-    )
-    shuffled_tile_resources = shuffled_tile_resources_param or random.sample(
-        map_template.tile_resources, len(map_template.tile_resources)
-    )
-    shuffled_numbers = shuffled_numbers_param or random.sample(
-        map_template.numbers, len(map_template.numbers)
-    )
+    shuffled_port_resources = shuffled(map_template.port_resources)
+    shuffled_tile_resources = shuffled(map_template.tile_resources)
+    shuffled_numbers = shuffled(map_template.numbers)
 
     # for each topology entry, place a tile. keep track of nodes and edges
     all_tiles: Dict[Coordinate, Tile] = {}
@@ -365,15 +360,16 @@ def initialize_tiles(
             all_tiles[coordinate] = port
         elif tile_type == LandTile:
             resource = shuffled_tile_resources.pop()
+            number = None
+
+            # If not a desert resource, assign a number.
             if resource != None:
                 number = shuffled_numbers.pop()
-                tile = LandTile(tile_autoinc, resource, number, nodes, edges)
-            else:
-                tile = LandTile(tile_autoinc, None, None, nodes, edges)  # desert
+
+            tile = LandTile(tile_autoinc, resource, number, nodes, edges)
             all_tiles[coordinate] = tile
         elif tile_type == Water:
-            water_tile = Water(tile_autoinc, nodes, edges)
-            all_tiles[coordinate] = water_tile
+            all_tiles[coordinate] = Water(tile_autoinc, nodes, edges)
         else:
             raise ValueError("Invalid tile")
 
