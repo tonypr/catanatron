@@ -260,17 +260,20 @@ def yield_resources(board: Board, resource_freqdeck, number):
     for coordinate, tile in board.map.land_tiles.items():
         if tile.number != number or board.robber_coordinate == coordinate:
             continue  # doesn't yield
+        assert tile.resource is not None
 
         for node_id in tile.nodes.values():
             building = board.buildings.get(node_id, None)
-            assert tile.resource is not None
             if building is None:
                 continue
-            elif building[1] == SETTLEMENT:
-                intented_payout[building[0]][tile.resource] += 1
+
+            color, building_type = building
+
+            if building_type == SETTLEMENT:
+                intented_payout[color][tile.resource] += 1
                 resource_totals[tile.resource] += 1
-            elif building[1] == CITY:
-                intented_payout[building[0]][tile.resource] += 2
+            elif building_type == CITY:
+                intented_payout[color][tile.resource] += 2
                 resource_totals[tile.resource] += 2
 
     # for each resource, check enough in deck to yield.
