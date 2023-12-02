@@ -54,7 +54,7 @@ class Port:
 
 @dataclass(frozen=True)
 class Water:
-    nodes: Dict[NodeRef, int]
+    nodes: Dict[NodeRef, NodeId]
     edges: Dict[EdgeRef, EdgeId]
 
 
@@ -294,7 +294,7 @@ def get_node_counter_production(
     adjacent_tiles: Dict[int, List[LandTile]], node_id: NodeId
 ):
     tiles = adjacent_tiles[node_id]
-    production = defaultdict(float)
+    production: Dict[FastResource, float] = defaultdict(float)
     for tile in tiles:
         if tile.resource is not None:
             production[tile.resource] += number_probability(tile.number)
