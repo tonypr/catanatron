@@ -1,5 +1,7 @@
 from catanatron.game import Game
 from catanatron.models.enums import Action, ActionType
+from catanatron.models.player import Color
+from catanatron.models.board import longest_acyclic_path
 
 
 def build_initial_placements(
@@ -32,3 +34,11 @@ def advance_to_play_turn(game):
 
 def end_turn(game):
     game.execute(Action(game.state.current_color(), ActionType.END_TURN, None))
+
+
+def continuous_roads_by_player(board, color: Color):
+    paths = []
+    components = board.find_connected_components(color)
+    for component in components:
+        paths.append(longest_acyclic_path(board, component, color))
+    return paths

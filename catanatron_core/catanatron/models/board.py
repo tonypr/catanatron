@@ -289,13 +289,6 @@ class Board:
         """
         return self.connected_components[color]
 
-    def continuous_roads_by_player(self, color: Color):
-        paths = []
-        components = self.find_connected_components(color)
-        for component in components:
-            paths.append(longest_acyclic_path(self, component, color))
-        return paths
-
     def copy(self):
         board = Board(self.map, initialize=False)
         board.map = self.map  # reuse since its immutable

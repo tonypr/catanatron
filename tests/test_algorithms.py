@@ -10,6 +10,7 @@ from catanatron.state_functions import (
 )
 from catanatron.models.player import SimplePlayer, Color
 from catanatron.models.enums import KNIGHT, ORE, SHEEP, WHEAT
+from tests.utils import continuous_roads_by_player
 
 
 def test_longest_road_simple():
@@ -193,7 +194,7 @@ def test_cut_but_not_disconnected():
     board.build_road(Color.RED, (5, 0))
     board.build_road(Color.RED, (3, 12))
     assert (
-        max(map(lambda path: len(path), board.continuous_roads_by_player(Color.RED)))
+        max(map(lambda path: len(path), continuous_roads_by_player(board, Color.RED)))
         == 7
     )
     assert len(board.find_connected_components(Color.RED)) == 1
@@ -201,6 +202,6 @@ def test_cut_but_not_disconnected():
     board.build_settlement(Color.BLUE, 2, initial_build_phase=True)
     assert len(board.find_connected_components(Color.RED)) == 1
     assert (
-        max(map(lambda path: len(path), board.continuous_roads_by_player(Color.RED)))
+        max(map(lambda path: len(path), continuous_roads_by_player(board, Color.RED)))
         == 6
     )
