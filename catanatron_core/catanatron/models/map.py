@@ -351,7 +351,6 @@ def initialize_tiles(
     all_tiles: Dict[Coordinate, Tile] = {}
     node_autoinc = 0
     tile_autoinc = 0
-    port_autoinc = 0
     for coordinate, tile_type in map_template.topology.items():
         nodes, edges, node_autoinc = get_nodes_and_edges(
             all_tiles, coordinate, node_autoinc
@@ -361,10 +360,10 @@ def initialize_tiles(
         if isinstance(tile_type, tuple):  # is port
             (_, direction) = tile_type
             port = Port(
-                port_autoinc, shuffled_port_resources.pop(), direction, nodes, edges
+                tile_autoinc, shuffled_port_resources.pop(), direction, nodes, edges
             )
             all_tiles[coordinate] = port
-            port_autoinc += 1
+            tile_autoinc += 1
         elif tile_type == LandTile:
             resource = shuffled_tile_resources.pop()
             if resource != None:
