@@ -264,9 +264,9 @@ def init_port_nodes_cache(
         if not isinstance(tile, Port):
             continue
 
-        (a_noderef, b_noderef) = PORT_DIRECTION_TO_NODEREFS[tile.direction]
-        port_nodes[tile.resource].add(tile.nodes[a_noderef])
-        port_nodes[tile.resource].add(tile.nodes[b_noderef])
+        for noderef in PORT_DIRECTION_TO_NODEREFS[tile.direction]:
+            port_nodes[tile.resource].add(tile.nodes[noderef])
+
     return port_nodes
 
 
