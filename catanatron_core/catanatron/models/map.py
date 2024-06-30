@@ -388,22 +388,8 @@ def initialize_tiles(
 
 def get_nodes_and_edges(tiles, coordinate: Coordinate, node_autoinc):
     """Get pre-existing nodes and edges in board for given tile coordinate"""
-    nodes = {
-        NodeRef.NORTH: None,
-        NodeRef.NORTHEAST: None,
-        NodeRef.SOUTHEAST: None,
-        NodeRef.SOUTH: None,
-        NodeRef.SOUTHWEST: None,
-        NodeRef.NORTHWEST: None,
-    }
-    edges = {
-        EdgeRef.EAST: None,
-        EdgeRef.SOUTHEAST: None,
-        EdgeRef.SOUTHWEST: None,
-        EdgeRef.WEST: None,
-        EdgeRef.NORTHWEST: None,
-        EdgeRef.NORTHEAST: None,
-    }
+    nodes = {direction: None for direction in NodeRef}
+    edges = {direction: None for direction in EdgeRef}
 
     def add(acoord, bcoord):
         return tuple(x + y for x, y in zip(acoord, bcoord))
