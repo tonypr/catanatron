@@ -4,7 +4,7 @@ from catanatron.models.map import (
     CatanMap,
     LandTile,
     get_nodes_and_edges,
-    get_node_counter_production,
+    get_node_production,
     DICE_PROBAS,
 )
 
@@ -18,7 +18,7 @@ def test_node_production_of_same_resource_adjacent_tile():
             LandTile(3, WOOD, 12, dict(), dict()),
         ]
     }
-    result = get_node_counter_production(adjacent_tiles, 1)
+    result = get_node_production(adjacent_tiles, 1)
     assert result["WOOD"] == DICE_PROBAS[12] + DICE_PROBAS[6] + DICE_PROBAS[8]
 
 
