@@ -482,48 +482,6 @@ PORT_DIRECTION_TO_NODEREFS = {
     Direction.SOUTHWEST: (NodeRef.SOUTHWEST, NodeRef.SOUTH),
 }
 
-TOURNAMENT_MAP_TILES = initialize_tiles(
-    BASE_MAP_TEMPLATE,
-    [10, 8, 3, 6, 2, 5, 10, 8, 4, 11, 12, 9, 5, 4, 9, 11, 3, 6],
-    [
-        None,
-        SHEEP,
-        None,
-        ORE,
-        WHEAT,
-        None,
-        WOOD,
-        BRICK,
-        None,
-    ],
-    [
-        None,
-        WOOD,
-        SHEEP,
-        SHEEP,
-        WOOD,
-        WHEAT,
-        WOOD,
-        WHEAT,
-        BRICK,
-        SHEEP,
-        BRICK,
-        SHEEP,
-        WHEAT,
-        WHEAT,
-        ORE,
-        BRICK,
-        ORE,
-        WOOD,
-        ORE,
-        None,
-    ],
-)
-TOURNAMENT_MAP = CatanMap.from_tiles(TOURNAMENT_MAP_TILES)
 
-
-def build_map(map_type: Literal["BASE", "TOURNAMENT"]):
-    if map_type == "TOURNAMENT":
-        return TOURNAMENT_MAP  # this assumes map is read-only data struct
-    else:
-        return CatanMap.from_template(BASE_MAP_TEMPLATE)
+def build_map(map_type: Literal["BASE"]):
+    return CatanMap.from_template(BASE_MAP_TEMPLATE)

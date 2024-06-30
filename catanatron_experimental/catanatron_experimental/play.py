@@ -112,7 +112,7 @@ class CustomTimeRemainingColumn(TimeRemainingColumn):
 @click.option(
     "--config-map",
     default="BASE",
-    type=click.Choice(["BASE", "MINI", "TOURNAMENT"], case_sensitive=False),
+    type=click.Choice(["BASE"], case_sensitive=False),
     help="Sets Map to use. MINI is a 7-tile smaller version. TOURNAMENT uses a fixed balanced map.",
 )
 @click.option(
