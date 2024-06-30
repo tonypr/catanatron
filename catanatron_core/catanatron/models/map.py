@@ -2,7 +2,7 @@ import typing
 from dataclasses import dataclass
 import random
 from enum import Enum
-from collections import Counter, defaultdict
+from collections import defaultdict
 from typing import (
     Dict,
     FrozenSet,
@@ -205,7 +205,7 @@ class CatanMap:
         port_nodes: Dict[Optional[FastResource], Set[int]] = dict(),
         land_nodes: FrozenSet[NodeId] = frozenset(),
         adjacent_tiles: Dict[int, List[LandTile]] = dict(),
-        node_production: Dict[NodeId, Counter] = dict(),
+        node_production: Dict[NodeId, Dict] = dict(),
         tiles_by_id: Dict[int, LandTile] = dict(),
         ports_by_id: Dict[int, Port] = dict(),
     ):
