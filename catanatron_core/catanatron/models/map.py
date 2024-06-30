@@ -285,23 +285,21 @@ def init_adjacent_tiles(
 
 def init_node_production(
     adjacent_tiles: Dict[int, List[LandTile]]
-) -> Dict[NodeId, Counter]:
-    """Returns node_id => Counter({WHEAT: 0.123, ...})"""
+) -> Dict[NodeId, Dict]:
+    """Returns node_id => {WHEAT: 0.123, ...}"""
     node_production = dict()
     for node_id in adjacent_tiles.keys():
-        node_production[node_id] = get_node_counter_production(adjacent_tiles, node_id)
+        node_production[node_id] = get_node_production(adjacent_tiles, node_id)
     return node_production
 
 
-def get_node_counter_production(
-    adjacent_tiles: Dict[int, List[LandTile]], node_id: NodeId
-):
+def get_node_production(adjacent_tiles: Dict[int, List[LandTile]], node_id: NodeId):
     tiles = adjacent_tiles[node_id]
     production = defaultdict(float)
     for tile in tiles:
         if tile.resource is not None:
             production[tile.resource] += number_probability(tile.number)
-    return Counter(production)
+    return production
 
 
 def build_dice_probas():
